@@ -14,6 +14,8 @@ TOTAL_PAGES = int(os.environ.get("TOTAL_PAGES")) or 100
 FAIL = "\033[91m"
 ENDC = "\033[0m"
 
+empty_txt = "Empty"
+
 fields = [
     "Company Name",
     "LinkedIn URL",
@@ -51,19 +53,19 @@ def write_csv(chunk, chunk_order, i):
                     csvwriter.writerows(
                         [
                             [
-                                data["name"] or "N/A",
-                                data["linkedinUrl"] or "N/A",
+                                data["name"] or empty_txt,
+                                data["linkedinUrl"] or empty_txt,
                                 str(
-                                    f'{data["headquarters"]["location"]["latitude"] or "N/A"}, {data["headquarters"]["location"]["longitude"] or "N/A"}'
+                                    f'{data["headquarters"]["location"]["latitude"] or empty_txt}, {data["headquarters"]["location"]["longitude"] or empty_txt}'
                                 ),
-                                data["headquarters"]["name"] or "N/A",
+                                data["headquarters"]["name"] or empty_txt,
                             ]
                         ]
                     )
                 except Exception as e:
                     print(
                         FAIL,
-                        e,
+                        e.with_traceback(e.__traceback__),
                         f'{COMPANIES_DETAILS_URL}{company["urlString"]}.json?companyUrlString={company["urlString"]}',
                         ENDC,
                     )

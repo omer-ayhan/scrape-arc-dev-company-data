@@ -13,6 +13,8 @@ TOTAL_PAGES = int(os.environ.get("TOTAL_PAGES")) or 100
 FAIL = "\033[91m"
 ENDC = "\033[0m"
 
+empty_txt = "Empty"
+
 fields = [
     "Company Name",
     "LinkedIn URL",
@@ -25,19 +27,18 @@ totalPagesChunks = [
     int((TOTAL_PAGES * (i + 1)) / CHUNK_SIZE) for i in range(CHUNK_SIZE)
 ]
 
-for i, chunk in enumerate(totalPagesChunks):
-    chunk_order = i + 1
 
+def write_csv(chunk, chunk_order, i):
     csvfile = open(f"./csv/companies-{chunk_order}.csv", "a")
     csvwriter = csv.writer(csvfile)
     csvwriter.writerow(fields)
     for page in range(0 if i == 0 else totalPagesChunks[i - 1], chunk):
         try:
-            rows = []
             pageNo = page + 1
+            sleepVal = 10
             print(f"Chunk: {chunk_order} - Page: {pageNo}")
-            print(f"Sleeping for 10 seconds...")
-            sleep(10)
+            print(f"Sleeping for {sleepVal} seconds...")
+            sleep(sleepVal)
             resp = requests.get(f"{COMPANIES_URL}?page={pageNo}")
             companyDetailsData = resp.json()["pageProps"]["companies"]["companies"]
             for company in companyDetailsData:
@@ -45,31 +46,37 @@ for i, chunk in enumerate(totalPagesChunks):
                     resp = requests.get(
                         f'{COMPANIES_DETAILS_URL}{company["urlString"]}.json?companyUrlString={company["urlString"]}'
                     )
-                    print(f'{company["name"]} - {company["urlString"]}')
                     data = resp.json()["pageProps"]["companyData"]
-                    rows.append(
+
+                    print(f'Writing {company["name"]} - {company["urlString"]}')
+                    csvwriter.writerows(
                         [
-                            data["name"],
-                            data["linkedinUrl"],
-                            str(
-                                f'{data["headquarters"]["location"]["latitude"]}, {data["headquarters"]["location"]["longitude"]}'
-                            ),
-                            data["headquarters"]["name"],
+                            [
+                                data["name"] or empty_txt,
+                                data["linkedinUrl"] or empty_txt,
+                                str(
+                                    f'{data["headquarters"]["location"]["latitude"] or empty_txt}, {data["headquarters"]["location"]["longitude"] or empty_txt}'
+                                ),
+                                data["headquarters"]["name"] or empty_txt,
+                            ]
                         ]
                     )
                 except Exception as e:
                     print(
                         FAIL,
-                        e,
+                        e.with_traceback(e.__traceback__),
                         f'{COMPANIES_DETAILS_URL}{company["urlString"]}.json?companyUrlString={company["urlString"]}',
                         ENDC,
                     )
                     continue
 
-            print(f"Writing chunk {chunk_order} to companies-{chunk_order}.csv...")
-            csvwriter.writerows(rows)
         except Exception as e:
             print(FAIL, e, f"{COMPANIES_URL}?page={pageNo}", ENDC)
             continue
     print(f"Closing chunk {chunk_order}...")
     csvfile.close()
+
+
+for i, chunk in enumerate(totalPagesChunks):
+    chunk_order = i + 1
+    write_csv(chunk, chunk_order, i)
