@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[scripts]
+start = "pipenv run python scrape.py"
+start-threaded = "pipenv run python scrape_threaded.py"
+
+[packages]
+requests = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
