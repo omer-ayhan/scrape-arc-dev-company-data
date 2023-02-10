@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-start = "pipenv run python scrape.py"
-start-threaded = "pipenv run python scrape_threaded.py"
+scrape = "pipenv run python scrape.py"
+scrape-threaded = "pipenv run python scrape_threaded.py"
 
 [packages]
 requests = "*"
