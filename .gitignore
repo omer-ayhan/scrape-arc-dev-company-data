@@ -2,3 +2,7 @@
 .env.*
 !.env.example
 csv/*
+!csv/.gitkeep
+json/*
+!json/.gitkeep
+.DS_Store
