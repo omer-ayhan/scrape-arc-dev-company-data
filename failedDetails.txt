@@ -1,3 +1,0 @@
-https://arc.dev/_next/data/X_2l5AhHs8aPrzkuZrp7z/en/company/masison-resources.json?companyUrlString=masison-resources 
-https://arc.dev/_next/data/X_2l5AhHs8aPrzkuZrp7z/en/company/projekt202.json?companyUrlString=projekt202 
-https://arc.dev/_next/data/X_2l5AhHs8aPrzkuZrp7z/en/company/ventechsoft.json?companyUrlString=ventechsoft 

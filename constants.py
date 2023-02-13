@@ -81,7 +81,6 @@ country_names = {
         "QC",
         "SK",
         "YT",
-        "CA",
         "Canada",
         "Newfoundland and Labrador",
         "Nova Scotia",
@@ -269,8 +268,6 @@ country_names = {
         "Albania",
     ],
     "montenegro": [
-        "ME",
-        "MNE",
         "Montenegro",
     ],
     "kosovo": [

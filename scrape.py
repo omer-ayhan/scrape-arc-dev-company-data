@@ -3,8 +3,8 @@ import csv
 from time import sleep
 import os
 
-COMPANIES_URL = "https://arc.dev/_next/data/X_2l5AhHs8aPrzkuZrp7z/en/companies.json"
-COMPANIES_DETAILS_URL = "https://arc.dev/_next/data/X_2l5AhHs8aPrzkuZrp7z/en/company/"
+COMPANIES_URL = os.environ.get("COMPANIES_URL")
+COMPANIES_DETAILS_URL = os.environ.get("COMPANIES_DETAILS_URL")
 
 CHUNK_SIZE = int(os.environ.get("CHUNK_SIZE")) or 2
 TOTAL_PAGES = int(os.environ.get("TOTAL_PAGES")) or 100
